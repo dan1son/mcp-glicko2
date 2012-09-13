@@ -10,6 +10,7 @@ var UPDATE_INTERVAL = 14400000;
 var FIGHT_JSON_HOST = 'nerd.nu';
 var FIGHT_JSON_PATH = '/survival/survivalstats.json';
 
+var SERVER_PORT = 8282;
 
 var express = require('express');
 var http = require('http');
@@ -274,10 +275,12 @@ function getFinalArray(mapOfPlayers) {
         }
 		var newPlayer = {};
 		newPlayer.rating = playerObj.rating;
+		newPlayer.ratingArmor = playerObj.ratingArmor;
+		newPlayer.ratingNoArmor = playerObj.ratingNoArmor;
 		newPlayer.name = playerObj.name;
 		newPlayer.rank = playerObj.rank;
 		newPlayer.rankArmor = playerObj.rankArmor;
-        newPlayer.rankNoArmor = playerObj.rankNoArmor;
+        	newPlayer.rankNoArmor = playerObj.rankNoArmor;
 		allPlayers[xi] = newPlayer;
         xi++;
 	}
@@ -317,5 +320,5 @@ app.get('/player', function (req, res) {
         });
 
 
-app.listen(8282);
-console.log('Server running at http://127.0.0.1:8282/');
+app.listen(SERVER_PORT);
+console.log('Server running at http://127.0.0.1:' + SERVER_PORT);

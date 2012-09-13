@@ -1,7 +1,7 @@
 {
   "name": "mcp-glicko2",
   "description": "git://github.com/dan1son/mcp-glicko2.git",
-  "version": "0.1",
+  "version": "0.1.0",
   "private": true,
   "dependencies": {
     "express": "latest"
