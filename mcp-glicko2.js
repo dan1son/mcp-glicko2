@@ -179,8 +179,8 @@ function calcBattles(chunkedData) {
 		}
 	}
     
-    // Handle the rest of the players for this chunk.  This call will end up only updating the RD value
-    // which is used to determine the variation of their rating. 
+    	// Handle the rest of the players for this chunk.  This call will end up only updating the RD value
+    	// which is used to determine the variation of their rating. 
 	for (playerName in playerMap) {
 		if (!dupeCheck[playerName]) {
 			updatePlayerNoKills(playerName, playerMap);
@@ -272,10 +272,10 @@ function getFinalArray(mapOfPlayers) {
 	for (player in mapOfPlayers) {
 		playerObj = mapOfPlayers[player];
         
-        // In loops are dumb on large objects
-        if (playerObj.name == "") {
-            continue;
-        }
+        	// In loops are dumb on large objects
+        	if (playerObj.name == "") {
+        	    continue;
+        	}
 		var newPlayer = {};
 		newPlayer.rating = playerObj.rating;
 		newPlayer.ratingArmor = playerObj.ratingArmor;
@@ -283,9 +283,9 @@ function getFinalArray(mapOfPlayers) {
 		newPlayer.name = playerObj.name;
 		newPlayer.rank = playerObj.rank;
 		newPlayer.rankArmor = playerObj.rankArmor;
-        newPlayer.rankNoArmor = playerObj.rankNoArmor;
+        	newPlayer.rankNoArmor = playerObj.rankNoArmor;
 		allPlayers[xi] = newPlayer;
-        xi++;
+        	xi++;
 	}
     
 	allPlayers.sort(function(a, b) { if (a.rating && b.rating) { return b.rating - a.rating } else return -1});
@@ -310,16 +310,16 @@ app.get('/', function (req, res) {
 });
 
 app.options('/player', function(req, res) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    res.end('');
+    	res.header("Access-Control-Allow-Origin", "*");
+    	res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    	res.end('');
 });
 
 app.get('/player', function (req, res) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    res.send(playerMap[req.query['name']]);
-    console.log('Connection: ' + req);
+    	res.header("Access-Control-Allow-Origin", "*");
+    	res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    	res.send(playerMap[req.query['name']]);
+    	console.log('Connection: ' + req);
 });
 
 
