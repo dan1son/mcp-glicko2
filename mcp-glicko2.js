@@ -12,8 +12,8 @@ var MINIMUM_RD_ARMOR = 225;
 var MINIMUM_RD_NOARMOR = 175;
 
 // Path goodies
-var FIGHT_JSON_HOST = 'nerd.nu';
-var FIGHT_JSON_PATH = '/survival/survivalstats.json';
+var FIGHT_JSON_HOST = 'serverhost';
+var FIGHT_JSON_PATH = 'pathtojson';
 
 var SERVER_PORT = 8282;
 
