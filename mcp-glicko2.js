@@ -6,6 +6,11 @@ var CHUNK_SIZE = 150;
 // how often to check for updates 14400000 milliseconds  = 4 hours
 var UPDATE_INTERVAL = 14400000;
 
+// Minimum RD threshold
+var MINIMUM_RD = 170;
+var MINIMUM_RD_ARMOR = 225;
+var MINIMUM_RD_NOARMOR = 175;
+
 // Path goodies
 var FIGHT_JSON_HOST = 'nerd.nu';
 var FIGHT_JSON_PATH = '/survival/survivalstats.json';
@@ -30,6 +35,10 @@ var lastId = 0;
 function doMaths() {
 	http.request({host: FIGHT_JSON_HOST, path: FIGHT_JSON_PATH},
 		function (response) {
+			// Only chunk the first calculations during loadup.  After that we want it time based.  
+			if (lastId != 0) {
+				CHUNK_SIZE = 100000;
+			}
 			var str = '';
 			response.on('data', function (chunk) {
 				str += chunk;
@@ -61,9 +70,9 @@ function doMaths() {
 					console.log('Successful: ' + calcCount + ' - Now Sorting and Ranking');
                         
                     // Sort all of the lists
-                    var allPlayers = getSortedPlayers(playerMap);
-                    var allPlayersArmor = getSortedPlayers(playerMapArmor);
-                    var allPlayersUnArmored = getSortedPlayers(playerMapNoArmor);
+                    var allPlayers = getSortedPlayers(playerMap, MINIMUM_RD);
+                    var allPlayersArmor = getSortedPlayers(playerMapArmor, MINIMUM_RD_ARMOR);
+                    var allPlayersUnArmored = getSortedPlayers(playerMapNoArmor, MINIMUM_RD_NOARMOR);
                         
                     // Update the variables in the main playerMap
                     for (i=0; i < allPlayers.length; i++) {
@@ -242,7 +251,7 @@ function updatePlayerNoKills(playerName, mapOfPlayers) {
 	mapOfPlayers[playerName] = player;
 }
 
-function getSortedPlayers(mapOfPlayers) {
+function getSortedPlayers(mapOfPlayers, minimum_rd) {
 	var allPlayers = [];
 	var xi = 0;
 	for (player in mapOfPlayers) {
@@ -252,6 +261,11 @@ function getSortedPlayers(mapOfPlayers) {
         if (playerObj.name == "") {
             continue;
         }
+
+	// Drop out if below the minimum RD threshold
+	if (playerObj.rd > minimum_rd) {
+		continue;
+	}
         
         var newPlayer = {};
         newPlayer.rating = playerObj.rating;
@@ -274,21 +288,23 @@ function getFinalArray(mapOfPlayers) {
         
         	// In loops are dumb on large objects
         	if (playerObj.name == "") {
-        	    continue;
+        		continue;
         	}
+
 		var newPlayer = {};
 		newPlayer.rating = playerObj.rating;
 		newPlayer.ratingArmor = playerObj.ratingArmor;
 		newPlayer.ratingNoArmor = playerObj.ratingNoArmor;
 		newPlayer.name = playerObj.name;
-		newPlayer.rank = playerObj.rank;
-		newPlayer.rankArmor = playerObj.rankArmor;
-        	newPlayer.rankNoArmor = playerObj.rankNoArmor;
+		newPlayer.rank = playerObj.rank === 0 ? 1 : playerObj.rank ? playerObj.rank + 1 : playerObj.rank;
+		newPlayer.rankArmor = playerObj.rankArmor === 0 ? 1 : playerObj.rankArmor ? playerObj.rankArmor + 1 : playerObj.rankArmor;
+        	newPlayer.rankNoArmor = playerObj.rankNoArmor === 0 ? 1 : playerObj.rankNoArmor ? playerObj.rankNoArmor + 1 : playerObj.rankNoArmor;
+		newPlayer.rd = playerObj.rd;
 		allPlayers[xi] = newPlayer;
         	xi++;
 	}
     
-	allPlayers.sort(function(a, b) { if (a.rating && b.rating) { return b.rating - a.rating } else return -1});
+	allPlayers.sort(function(a, b) { if (a.rank == undefined) { return 1 } if (b.rank == undefined) { return -1 } if (a.rank && b.rank) { return a.rank === b.rank ? 0 : a.rank < b.rank ? -1 : 1} else return 1});
 	return allPlayers;
 }
 
