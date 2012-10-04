@@ -26,7 +26,8 @@ The data is then served with a simple json REST api.
     "name": "nyislanders2121",
     "rank": 3,
     "rankArmor": 0,
-    "rankNoArmor": 27
+    "rankNoArmor": 27,
+    "rd" : 97.56178153473715
   },
   {
     "rating": 2132.372858152526,
@@ -35,7 +36,8 @@ The data is then served with a simple json REST api.
     "name": "bhrossman",
     "rank": 4,
     "rankArmor": 46,
-    "rankNoArmor": 0
+    "rankNoArmor": 0,
+    "rd": 102.22539832283118
   }
 ]
 
