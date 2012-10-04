@@ -247,6 +247,13 @@ for example 0.5 to half the weight when you are playing on a team of two players
 
 	out.update.rating = out.change.rating + out.init.rating;
 	out.update.rd = out.change.rd + out.init.rd;
+
+	// Hack in an extra RD booster 
+	out.update.rd = out.update.rd + .5;
+	if (out.update.rd > 350) { 
+		out.update.rd = 350;
+	}
+
 	out.update.vol = out.change.vol + out.init.vol;	
 	out.timestamp = (new Date()).getTime() / 1000;//in seconds from unix epoch
 	return out;
